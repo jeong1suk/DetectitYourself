@@ -3,9 +3,7 @@ from torchvision import transforms, models
 from PIL import Image
 import requests
 import tempfile
-import torch
 import numpy as np
-import cv2
 
 # Grad-CAM 라이브러리 임포트
 from pytorch_grad_cam import GradCAM
@@ -110,11 +108,17 @@ if uploaded_files:
                 # 원본 이미지 넘파이 변환
                 rgb_img = np.array(img) / 255.0
 
-                # Grad-CAM 결과 이미지 크기 조정 (원본 크기로)
-                resized_cam = cv2.resize(grayscale_cam, (rgb_img.shape[1], rgb_img.shape[0]))
+                # Grad-CAM 결과를 Pillow 이미지로 변환
+                grayscale_cam_img = Image.fromarray((grayscale_cam * 255).astype(np.uint8))
+
+                # Grad-CAM 결과 이미지 크기 조정 (Pillow로)
+                resized_cam = grayscale_cam_img.resize((rgb_img.shape[1], rgb_img.shape[0]), Image.ANTIALIAS)
+
+                # 리사이즈된 Grad-CAM 결과를 NumPy 배열로 변환
+                resized_cam_np = np.array(resized_cam) / 255.0
 
                 # 시각화 결과 생성
-                visualization = show_cam_on_image(rgb_img, resized_cam, use_rgb=True)
+                visualization = show_cam_on_image(rgb_img, resized_cam_np, use_rgb=True)
 
                 # 결과 표시
                 st.image(visualization, caption="Grad-CAM 시각화 결과", use_container_width=True)

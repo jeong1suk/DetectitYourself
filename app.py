@@ -118,7 +118,7 @@ if uploaded_files:
                 resized_cam_np = np.array(resized_cam) / 255.0
 
                 # 시각화 결과 생성
-                visualization = show_cam_on_image(rgb_img, resized_cam_np, use_rgb=True)
+                visualization = resized_cam_np[..., None] * rgb_img
 
                 # 결과 표시
                 st.image(visualization, caption="Grad-CAM 시각화 결과", use_container_width=True)

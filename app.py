@@ -14,13 +14,13 @@ from pytorch_grad_cam.utils.image import show_cam_on_image
 
 # Hugging Face API 설정
 API_URL = "https://api-inference.huggingface.co/models/umm-maybe/AI-image-detector"
-headers = {"Authorization": "Bearer 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"}
+API_KEY = st.secrets["huggingface"]["api_key"]
 
 # API 호출 함수
 def query(filename):
     with open(filename, "rb") as f:
         data = f.read()
-    response = requests.post(API_URL, headers=headers, data=data)
+    response = requests.post(API_URL, headers={"Authorization": f"Bearer {API_KEY}"}, data=data)
     return response.json()
 
 # 임시 파일 저장 함수

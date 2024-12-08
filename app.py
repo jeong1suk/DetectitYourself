@@ -40,7 +40,7 @@ def fetch_tmp_path(file_data):
 icon = Image.open(APP_LOGO)
 favicon = Image.open(FAVICON)
 st.set_page_config(
-    page_title="Hugging Face API + GradCAM 시각화",
+    page_title="DIY",
     page_icon=favicon,
     layout="centered",
     initial_sidebar_state="auto",
@@ -51,21 +51,20 @@ with left_co:
     st.image(APP_LOGO)
 with right_co:
     """
-    # DIY
-    ## GenAI Image Detector
-    모델: [umm-maybe/AI-image-detector](https://huggingface.co/umm-maybe/AI-image-detector)
+    # Detect It Yourself (DIY)
+    ## AI-Driven Authenticity Analysis
+    모델: [AI-Generated Image Detector](https://huggingface.co/umm-maybe/AI-image-detector)
     """
 # 페이지 헤더
-st.title("🚀 Hugging Face API + Grad-CAM")
+st.title("🖼️ Detecting Truth in Images")
 st.write()
-# Subheader
-st.write(
-    """
-    👋 Welcome to DIY! This app detects Real vs GenAI/Fake images using a Convolutional Neural Network.
-    
-    Powered by [Artifact](https://github.com/awsaf49/artifact), a large-scale dataset with artificial and factual images for synthetic image detection.    
-    """
-)
+
+# 서브헤더
+st.write("""
+👋 Welcome to DIY: Unmasking AI-Generated Images!
+
+Our AI-powered tool helps you distinguish real from synthetic images, ensuring transparency and trust in the digital world.
+""")
 st.divider()
 
 # Body 

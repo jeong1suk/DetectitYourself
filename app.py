@@ -138,7 +138,7 @@ if menu_option == "Image":
                     grayscale_cam_img = Image.fromarray((grayscale_cam * 255).astype(np.uint8))
 
                     # Grad-CAM 결과 이미지 크기 조정 (Pillow로)
-                    resized_cam = grayscale_cam_img.resize((rgb_img.shape[1], rgb_img.shape[0]), Image.ANTIALIAS)
+                    resized_cam = grayscale_cam_img.resize((rgb_img.shape[1], rgb_img.shape[0]), Image.Resampling.LANCZOS)
 
                     # 리사이즈된 Grad-CAM 결과를 NumPy 배열로 변환
                     resized_cam_np = np.array(resized_cam) / 255.0

@@ -38,9 +38,10 @@ def fetch_tmp_path(file_data):
 ###############################################################################
 # Site metadata
 icon = Image.open(APP_LOGO)
+favicon = Image.open(FAVICON)
 st.set_page_config(
     page_title="Hugging Face API + GradCAM 시각화",
-    page_icon="🤖",
+    page_icon=favicon,
     layout="centered",
     initial_sidebar_state="auto",
 )
@@ -131,20 +132,17 @@ if menu_option == "Image":
                     # Grad-CAM 시각화 생성
                     grayscale_cam = cam(input_tensor=input_tensor, targets=targets)[0, :]
 
-                    # 원본 이미지 넘파이 변환
+                    # 원본 이미지 넘파이 변환 (0~1 범위로 정규화)
                     rgb_img = np.array(img) / 255.0
 
-                    # Grad-CAM 결과를 Pillow 이미지로 변환
-                    grayscale_cam_img = Image.fromarray((grayscale_cam * 255).astype(np.uint8))
+                    # Grad-CAM 결과를 원본 이미지 크기에 맞게 리사이즈
+                    grayscale_cam_resized = Image.fromarray((grayscale_cam * 255).astype(np.uint8)).resize(
+                        (rgb_img.shape[1], rgb_img.shape[0]), Image.Resampling.LANCZOS
+                    )
+                    grayscale_cam_resized = np.array(grayscale_cam_resized) / 255.0
 
-                    # Grad-CAM 결과 이미지 크기 조정 (Pillow로)
-                    resized_cam = grayscale_cam_img.resize((rgb_img.shape[1], rgb_img.shape[0]), Image.Resampling.LANCZOS)
-
-                    # 리사이즈된 Grad-CAM 결과를 NumPy 배열로 변환
-                    resized_cam_np = np.array(resized_cam) / 255.0
-
-                    # 시각화 결과 생성
-                    visualization = resized_cam_np[..., None] * rgb_img
+                    # Grad-CAM 결과를 원본 이미지 위에 색깔로 오버레이
+                    visualization = show_cam_on_image(rgb_img, grayscale_cam_resized, use_rgb=True)
 
                     # 결과 표시
                     st.image(visualization, caption="Grad-CAM 시각화 결과", use_container_width=True)

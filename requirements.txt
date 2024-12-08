@@ -5,5 +5,5 @@ Pillow
 requests
 numpy
 grad-cam
-opencv-python-contrib-headless
+opencv-contrib-python-headless
 altair
